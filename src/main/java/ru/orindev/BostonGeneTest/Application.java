@@ -1,4 +1,4 @@
-package BostonGeneTest;
+package ru.orindev.BostonGeneTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

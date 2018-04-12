@@ -1,6 +1,6 @@
-package BostonGeneTest;
+package ru.orindev.BostonGeneTest;
 
-import BostonGeneTest.repository.UserRepository;
+import ru.orindev.BostonGeneTest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

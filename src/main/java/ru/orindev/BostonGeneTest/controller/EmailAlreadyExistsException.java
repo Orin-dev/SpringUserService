@@ -1,4 +1,4 @@
-package BostonGeneTest.controller;
+package ru.orindev.BostonGeneTest.controller;
 
 /**
  * Created by Orin on 12.04.2018.

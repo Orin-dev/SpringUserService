@@ -1,6 +1,6 @@
-package BostonGeneTest.repository;
+package ru.orindev.BostonGeneTest.repository;
 
-import BostonGeneTest.dao.User;
+import ru.orindev.BostonGeneTest.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

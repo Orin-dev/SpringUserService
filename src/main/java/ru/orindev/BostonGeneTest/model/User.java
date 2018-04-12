@@ -1,11 +1,14 @@
-package BostonGeneTest.dao;
+package ru.orindev.BostonGeneTest.model;
+
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 @Entity
 @Table
@@ -15,23 +18,26 @@ public class User {
     @NotNull
     private Long id;
 
-    @Column(length = 255)
+    @Column
+    @Size(min = 3, max = 20)
     @NotNull
     private String name;
 
-    @Column(length = 255)
+    @Column
+    @Size(min = 3, max = 20)
     @NotNull
     private String secondName;
 
     @Column
     @NotNull
-    private LocalDate birthDate;
+    @Type(type="date")
+    private Date birthDate;
 
     @Column(length = 64)
     @NotNull
     private String email;
 
-    @Column(length = 32)
+    @Column(length = 256)
     @NotNull
     private String password;
 
@@ -59,11 +65,11 @@ public class User {
         this.secondName = secondName;
     }
 
-    public LocalDate getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
