@@ -1,10 +1,10 @@
-package ru.orindev.BostonGeneTest.controller;
+package ru.orindev.BostonGeneTest.SpringUserService.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import ru.orindev.BostonGeneTest.EmailChecker;
-import ru.orindev.BostonGeneTest.model.User;
-import ru.orindev.BostonGeneTest.repository.UserRepository;
+import ru.orindev.BostonGeneTest.SpringUserService.EmailChecker;
+import ru.orindev.BostonGeneTest.SpringUserService.model.User;
+import ru.orindev.BostonGeneTest.SpringUserService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +29,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public @ResponseBody User getUserByEmail(@RequestParam String email) {
+    public @ResponseBody
+    User getUserByEmail(@RequestParam String email) {
         User user = userRepository.getUserByEmail(email);
         return user;
     }

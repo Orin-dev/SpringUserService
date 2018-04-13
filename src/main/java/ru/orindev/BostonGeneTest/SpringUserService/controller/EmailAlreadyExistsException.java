@@ -1,4 +1,4 @@
-package ru.orindev.BostonGeneTest.controller;
+package ru.orindev.BostonGeneTest.SpringUserService.controller;
 
 /**
  * Created by Orin on 12.04.2018.

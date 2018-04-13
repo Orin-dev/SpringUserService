@@ -1,4 +1,4 @@
-package ru.orindev.BostonGeneTest.model;
+package ru.orindev.BostonGeneTest.SpringUserService.model;
 
 import org.hibernate.annotations.Type;
 

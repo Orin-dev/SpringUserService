@@ -1,4 +1,4 @@
-package ru.orindev.BostonGeneTest.config;
+package ru.orindev.BostonGeneTest.SpringUserService.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
