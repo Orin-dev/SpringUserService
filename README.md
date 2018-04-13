@@ -9,3 +9,37 @@ REST сервис отвечающий следующим требованиям
   использовать InMemory реализацию базы данных (т.е. хранить данные в памяти); 
   приложение  необходимо  реализовать  на  одном  из  языков Java 8, Groovy или Kotlin c 
 использованием стека технологий Spring не ниже версии 4.
+
+Инструкция по сборке в IntelliJ IDEA и запуску:
+1. Стянуть репозиторий и открыть maven проект
+2. В окне Maven Projects -> plugins выбрать spring-boot:run для запуска или воспользоваться командой mvn clean install spring-boot:repackage
+3. java -jar <файл из target>
+4. воспользовавшись любым rest-клиентом обратиться на адреса:
+ для добавления пользователя:
+ POST http://localhost:8080/user
+ пример тела запроса:
+
+ {
+ "id": 23423,
+ "name": "Frodo",
+ "secondName": "Baggins",
+ "birthDate": "1978-01-01",
+ "email": "baggins@gmail.com",
+ "password": "123"
+ }
+
+ для получения пользователя по email:
+ GET http://localhost:8080/user?email=baggins@gmail.com
+
+ пример ответа:
+{
+ "id": 23423,
+ "name": "Frodo",
+ "secondName": "Baggins",
+ "birthDate": "1978-01-01",
+ "email": "baggins@gmail.com",
+ "password": "$2a$10$TMAz9FTnfi5XWZsZnBzX.OhKWMYJv6iYOBW0x1/6uLvYb7PAZBrCK"
+ }
+
+ для удаления
+ DELETE http://localhost:8080/user?id=23423
