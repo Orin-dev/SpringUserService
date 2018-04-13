@@ -1,5 +1,0 @@
-BostonGeneTest\Application.class
-BostonGeneTest\repository\UserRepository.class
-BostonGeneTest\controller\UserController.class
-BostonGeneTest\dao\User.class
-BostonGeneTest\config\JpaConfig.class
