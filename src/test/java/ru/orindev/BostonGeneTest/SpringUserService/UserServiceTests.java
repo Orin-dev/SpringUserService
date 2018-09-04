@@ -14,6 +14,7 @@ import java.sql.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -21,8 +22,6 @@ public class UserServiceTests {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private int number;
 
     @Test
     public void WhenCreatingUser_ThenGotCreated() {
@@ -41,20 +40,19 @@ public class UserServiceTests {
         User userWithSameEmail = createTestUser(3, "test2@email.com");
         restTemplate.postForObject("/user", userToAdd, String.class);
         String result = restTemplate.postForObject("/user", userWithSameEmail, String.class);
-        assertEquals(result, "Email already exists: Email=test2@email.com");
+        assertTrue(result.contains("Email already exists: Email=test2@email.com"));
     }
 
     @Test
-    public void WhenTryingToDeleteExistingUser_ThenUserNotFound() {
+    public void WhenTryingToDeleteExistingUser_ThenUserNotFoundException() {
         User userToAdd = createTestUser(4, "test3@email.com");
 
         restTemplate.postForObject("/user", userToAdd, String.class);
         restTemplate.delete("/user/" + 4);
 
-        ResponseEntity<User> responseEntity =
-                restTemplate.getForEntity("/user?email=" + userToAdd.getEmail(), User.class);
-        User user = responseEntity.getBody();
-        assertNull(user);
+        String response =
+                restTemplate.getForObject("/user?email=" + userToAdd.getEmail(), String.class);
+        assertTrue(response.contains("пользователя с таким Email нет"));
     }
 
     @Test
@@ -66,6 +64,15 @@ public class UserServiceTests {
                 restTemplate.getForEntity("/user?email=" + userToAdd.getEmail(), User.class);
         User user = responseEntity.getBody();
         assertEquals(user.getName(), userToAdd.getName());
+    }
+
+    @Test
+    public void WhenTryingGetNotExistingUser_ThenGotException() {
+        User userToAdd = createTestUser(100500, "jigurda@j.j");
+
+            String response =
+                restTemplate.getForObject("/user?email=" + userToAdd.getEmail(), String.class);
+        assertTrue(response.contains("пользователя с таким Email нет"));
     }
 
 
@@ -80,14 +87,4 @@ public class UserServiceTests {
         return frodo;
     }
 
-    private User createTestUserWithSameEmailAs(User user) {
-        User bilbo = new User();
-        bilbo.setId(Long.valueOf(number));
-        bilbo.setName("Bilbo");
-        bilbo.setSecondName("Baggins");
-        bilbo.setBirthDate(Date.valueOf("0900-01-01"));
-        bilbo.setEmail( number + "baggins@shire.com");
-        bilbo.setPassword("thorin");
-        return bilbo;
-    }
 }

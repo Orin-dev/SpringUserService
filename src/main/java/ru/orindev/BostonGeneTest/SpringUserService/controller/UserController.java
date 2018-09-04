@@ -2,7 +2,6 @@ package ru.orindev.BostonGeneTest.SpringUserService.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import ru.orindev.BostonGeneTest.SpringUserService.EmailChecker;
 import ru.orindev.BostonGeneTest.SpringUserService.model.User;
 import ru.orindev.BostonGeneTest.SpringUserService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,30 +27,33 @@ public class UserController {
         return "hello";
     }
 
-    @GetMapping("")
+    @GetMapping
     public @ResponseBody
-    User getUserByEmail(@RequestParam String email) {
+    ResponseEntity<User> getUserByEmail(@RequestParam String email) throws UserNotFoundException {
         User user = userRepository.getUserByEmail(email);
-        return user;
+        if (user == null) {
+            throw new UserNotFoundException("пользователя с таким Email нет");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=UTF-8");
+        return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
 
-    @PostMapping(
-            consumes = "application/json",
-            produces = "application/json")
-    public ResponseEntity<User> addUser(@RequestBody User user) throws EmailAlreadyExistsException {
+    @PostMapping
+    public @ResponseBody
+    ResponseEntity<User> addUser(@RequestBody User user) throws EmailAlreadyExistsException {
 
         if (emailChecker.check(user.getEmail())) {
 
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User repositoryResponse = userRepository.save(user);
-            if(repositoryResponse != null) {
+            if (repositoryResponse != null) {
                 HttpHeaders headers = new HttpHeaders();
                 headers.add("Content-Type", "application/json; charset=UTF-8");
-                ResponseEntity<User> responseEntity = new ResponseEntity<User>(repositoryResponse, headers, HttpStatus.CREATED);
+                ResponseEntity<User> responseEntity = new ResponseEntity<>(repositoryResponse, headers, HttpStatus.CREATED);
                 return responseEntity;
-            }
-            else
-                return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+            } else
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         } else
             throw new EmailAlreadyExistsException("Email already exists: Email=" + user.getEmail());
@@ -59,20 +61,15 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public ResponseEntity deleteUser(@PathVariable int id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=UTF-8");
         try {
-            userRepository.delete(Long.valueOf(id));
-            return;
-        }
-        catch (Exception e){
-            return;
+            userRepository.deleteById(Long.valueOf(id));
+            return new ResponseEntity(headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(headers, HttpStatus.BAD_REQUEST);
         }
     }
 
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public String returnBadRequest(EmailAlreadyExistsException ex) {
-        return ex.getMessage();
-    }
 }

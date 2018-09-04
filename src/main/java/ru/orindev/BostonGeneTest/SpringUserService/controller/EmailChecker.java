@@ -1,4 +1,4 @@
-package ru.orindev.BostonGeneTest.SpringUserService;
+package ru.orindev.BostonGeneTest.SpringUserService.controller;
 
 import ru.orindev.BostonGeneTest.SpringUserService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,7 @@ public class EmailChecker {
     @Autowired
     UserRepository userRepository;
 
-    public boolean check(String eamil) {
-        if (userRepository.getUserByEmail(eamil) == null)
-            return true;
-        else return false;
+    public boolean check(String email) {
+        return (userRepository.getUserByEmail(email) == null);
     }
 }
